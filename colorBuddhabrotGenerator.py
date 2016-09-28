@@ -6,11 +6,13 @@ from pygame import Color
 pygame.init()
 
 def getScreen(height, width, iterations, screenName):
-    print screenName + " Rendering has started"
+    print '\n' + screenName + " Rendering has started"
     screen = [[0] * height for i in range(width)]
     for x in range(width):
-        if x % (width/10) == 0 and x != 0:
-            showProgress(x/(width/100))
+        if x % (width/10) == 0:
+            showProgress(int((x/(width/100))))
+        # if x % (width/10) == 0 and x != 0:
+        #     showProgress(int((x/(width/100))))
         for y in range(height):
             c = complex(((x * 3.) / width) - 2, ((y * 2.0) / height) - 1)
             z = c
@@ -36,7 +38,7 @@ def getScreen(height, width, iterations, screenName):
             if screen[x][y] > maximum:
                 maximum = screen[x][y]
 
-    print screenName + " Rendering has finished" + '\n'
+    print '\n' + screenName + " Rendering has finished" + '\n'
     return (screen, minimum, maximum)
 
 def drawColorMandel(height, width, redIteration, blueIteration, greenIteration):
@@ -74,7 +76,7 @@ def drawSingleMandel(height, width, iteration, screenName):
 
     for x in range(width):
         if x % (width/10) == 0 and x != 0:
-            showProgress(x/(width/100))
+            showProgress(int((x/(width/100))))
         for y in range(height):
             color = ((redScreen[x][y] - redMin) * 255) / (redMax - redMin)
             gfxdraw.pixel(window, x, y, Color(color, color,  color, 255))
@@ -82,18 +84,21 @@ def drawSingleMandel(height, width, iteration, screenName):
     pygame.display.flip()
 
 def showProgress(percentProgress):
-    progress = int(percentProgress)/10
-    print "[" + (progress - 1)*"=" + ">" + (10-progress)*"."+"] " + str(progress * 10) + "%"
+    tenths = int(percentProgress)/10
+    print "[" + (tenths) * ">" + (10 - tenths)*"."+"] " + str(tenths * 10) + "%"
 
 if __name__ == '__main__':
-    width = 4500
-    height = 3000
-    redIteration = 10
-    greenIteration = 40
-    blueIteration = 100
+    width = 3000
+    height = 2000
+    redIteration = 700
+    greenIteration = 4000
+    blueIteration = 6000
 
     window = pygame.display.set_mode((width, height))
-
     drawColorMandel(height, width, redIteration, blueIteration, greenIteration)
-    pygame.image.save(window, "wallpaper.png")
+
+    savedFilename = str(width) + "x" + str(height) + "_" + str(redIteration) + "_" + str(greenIteration) + "_" + str(blueIteration) + "_" + "wallpaper.png"
+    print "Saving final image " + savedFilename
+
+    pygame.image.save(window, savedFilename)
     pygame.display.quit()
