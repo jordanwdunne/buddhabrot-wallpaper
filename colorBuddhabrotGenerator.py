@@ -5,10 +5,12 @@ from pygame import gfxdraw
 from pygame import Color
 pygame.init()
 
-def getScreen(height, width, iterations):
+def getScreen(height, width, iterations, screenName):
+    print screenName + " Rendering has started"
     screen = [[0] * height for i in range(width)]
     for x in range(width):
-        print str(x)
+        if x % (width/10) == 0 and x != 0:
+            showProgress(x/(width/100))
         for y in range(height):
             c = complex(((x * 3.) / width) - 2, ((y * 2.0) / height) - 1)
             z = c
@@ -34,19 +36,13 @@ def getScreen(height, width, iterations):
             if screen[x][y] > maximum:
                 maximum = screen[x][y]
 
+    print screenName + " Rendering has finished" + '\n'
     return (screen, minimum, maximum)
 
-
-
-
-
-
-
 def drawColorMandel(height, width, redIteration, blueIteration, greenIteration):
-
-    redTuple = getScreen(height, width, redIteration)
-    greenTuple = getScreen(height, width, greenIteration)
-    blueTuple = getScreen(height, width, blueIteration)
+    redTuple = getScreen(height, width, redIteration, "Red Channel")
+    greenTuple = getScreen(height, width, greenIteration, "Green Channel")
+    blueTuple = getScreen(height, width, blueIteration, "Blue Channel")
 
     redScreen = redTuple[0]
     greenScreen = greenTuple[0]
@@ -70,9 +66,28 @@ def drawColorMandel(height, width, redIteration, blueIteration, greenIteration):
 
     pygame.display.flip()
 
+def drawSingleMandel(height, width, iteration, screenName):
+    screenTuple = getScreen(height, width, iteration, screenName)
+    screen = screenTuple[0]
+    screenMin = screenTuple[1]
+    screenMax = screenTuple[2]
+
+    for x in range(width):
+        if x % (width/10) == 0 and x != 0:
+            showProgress(x/(width/100))
+        for y in range(height):
+            color = ((redScreen[x][y] - redMin) * 255) / (redMax - redMin)
+            gfxdraw.pixel(window, x, y, Color(color, color,  color, 255))
+
+    pygame.display.flip()
+
+def showProgress(percentProgress):
+    progress = int(percentProgress)/10
+    print "[" + (progress - 1)*"=" + ">" + (10-progress)*"."+"] " + str(progress * 10) + "%"
+
 if __name__ == '__main__':
-    width = 450
-    height = 300
+    width = 4500
+    height = 3000
     redIteration = 10
     greenIteration = 40
     blueIteration = 100
@@ -80,5 +95,5 @@ if __name__ == '__main__':
     window = pygame.display.set_mode((width, height))
 
     drawColorMandel(height, width, redIteration, blueIteration, greenIteration)
-    pygame.image.save(window, "20000rendu_medium.png")
+    pygame.image.save(window, "wallpaper.png")
     pygame.display.quit()
