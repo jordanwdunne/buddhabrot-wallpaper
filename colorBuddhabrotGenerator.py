@@ -88,11 +88,11 @@ def showProgress(percentProgress):
     print "[" + (tenths) * ">" + (10 - tenths)*"."+"] " + str(tenths * 10) + "%"
 
 if __name__ == '__main__':
-    width = 3000
-    height = 2000
-    redIteration = 700
-    greenIteration = 4000
-    blueIteration = 6000
+    width = 4500
+    height = 3000
+    redIteration = 80
+    greenIteration = 600
+    blueIteration = 4000
 
     window = pygame.display.set_mode((width, height))
     drawColorMandel(height, width, redIteration, blueIteration, greenIteration)
