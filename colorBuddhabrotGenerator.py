@@ -11,22 +11,20 @@ def getScreen(height, width, iterations, screenName):
     for x in range(width):
         if x % (width/10) == 0:
             showProgress(int((x/(width/100))))
-        # if x % (width/10) == 0 and x != 0:
-        #     showProgress(int((x/(width/100))))
         for y in range(height):
             c = complex(((x * 3.) / width) - 2, ((y * 2.0) / height) - 1)
             z = c
-            complex_sequence = set([])
+            complexGroup = set([])
             for i in range(iterations):
-                complex_sequence.add(z)
+                complexGroup.add(z)
                 z = z ** 2 + c
                 if (z.real * z.real + z.imag * z.imag) > 4:
-                    complex_sequence.add(z)
-                    for term in complex_sequence:
-                        pixel_x = math.floor(((term.real + 2) * width) / 3.)
-                        pixel_y = math.floor(((term.imag + 1) * height) / 2.)
-                        if 0 <= pixel_x < width and 0 <= pixel_y < height:
-                            screen[int(pixel_x)][int(pixel_y)] += 1
+                    complexGroup.add(z)
+                    for term in complexGroup:
+                        pixelX = math.floor(((term.real + 2) * width) / 3.)
+                        pixelY = math.floor(((term.imag + 1) * height) / 2.)
+                        if 0 <= pixelX < width and 0 <= pixelY < height:
+                            screen[int(pixelX)][int(pixelY)] += 1
                     break
 
     minimum = screen[0][0]
